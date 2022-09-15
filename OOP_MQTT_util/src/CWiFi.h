@@ -13,6 +13,7 @@ class CWiFi {
      unsigned long _time_delay;
     
     public:
+    CWiFi();
     CWiFi(String ssid, String password, bool verbose);
     void init();
     void reconnect();

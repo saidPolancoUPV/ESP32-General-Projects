@@ -1,5 +1,8 @@
 #include "CWiFi.h"
 
+CWiFi::CWiFi() {
+}
+
 CWiFi::CWiFi(String ssid, String password, bool verbose=true) {
     this->VERBOSE = verbose;
     this->SSID = ssid;
@@ -18,6 +21,7 @@ void CWiFi::init() {
         while (WiFi.status() != WL_CONNECTED)
         {
             Serial.print(".");
+            delay(500);
         }
         
         Serial.println("Se ha establecido la conección\n");

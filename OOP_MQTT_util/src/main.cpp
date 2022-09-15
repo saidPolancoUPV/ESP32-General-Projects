@@ -1,9 +1,14 @@
 #include <Arduino.h>
+#include "CPubSub.h"
+
+CPubSub ps(String("INFINITUMD80E_2.4"), String("uADQZq7ZAQ"), String("192.168.0.13"), true);
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);
+  ps.init();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  ps.loop();
+  delay(1000);
 }

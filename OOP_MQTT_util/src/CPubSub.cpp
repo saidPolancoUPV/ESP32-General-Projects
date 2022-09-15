@@ -17,20 +17,12 @@ CPubSub::CPubSub(String ssid, String password, String mqtt_server, bool verbose=
     this->_mqtt_password = "";
     this->_mqtt_port = 1883;
 
-    this->_list_of_tipics = NULL;
-    this->_num_of_topics = 0;
+    this->_list_of_tipics = new String[1];
+    this->_num_of_topics = 1;
 
     this->_client = PubSubClient(this->_espClient);
     this->_lastMsg = 0;
     this->_value = 0;
-}
-
-void CPubSub::init() {
-    this->_wifi.init();
-}
-
-void CPubSub::set_subcriptions_topics(String * list_of_topics, byte num_of_topics) {
-    ;
 }
 
 void callback(char* topic, byte* message, unsigned int length) {
@@ -62,10 +54,55 @@ void callback(char* topic, byte* message, unsigned int length) {
     /******************************************************************************************/
 }
 
-void CPubSub::loop() {
-    this->_wifi.reconnect();
+void CPubSub::init() {
+    this->_wifi.init();
+    delay(500);
+    this->_list_of_tipics[0] = String("/public");
     this->_client.setServer(this->_mqtt_server.c_str(), this->_mqtt_port);
     this->_client.setCallback(callback);
+}
+
+void CPubSub::set_subcriptions_topics(String * list_of_topics, byte num_of_topics) {
+    delete [] this->_list_of_tipics;
+    this->_list_of_tipics = new String[num_of_topics];
+
+    for (byte i=0; i < num_of_topics; i++) {
+        this->_list_of_tipics[i] = list_of_topics[i];
+    }
+}
+
+void CPubSub::loop() {
+    this->_wifi.reconnect();
+    this->reconnect();
+}
+
+void CPubSub::reconnect() {
+    while (!this->_client.connected()) {
+        Serial.print("Conectando al servidor MQTT...");
+        if (this->_client.connect(this->_mqtt_device_name.c_str(), this->_mqtt_user.c_str(), this->_mqtt_password.c_str())) {
+            Serial.println("Connected.");
+            delay(1000);
+            /* for (byte i=0; i < this->_num_of_topics; i++) {
+                this->_client.subscribe(this->_list_of_tipics[i].c_str());
+                delay(500);
+            } */
+            this->_client.subscribe("/esp32/test");
+            Serial.println("**** Done ***");
+        } else {
+            Serial.print("Error en la conexión, rc=");
+            Serial.print(this->_client.state());
+            Serial.println(" intentando en 5 segundos");
+            delay(5000);
+        }
+    }
+}
+
+void CPubSub::set_mqtt_user(String user_name) {
+    this->_mqtt_user = user_name;
+}
+
+void CPubSub::set_mqtt_password(String passwd) {
+    this->_mqtt_password = passwd;
 }
 
 CPubSub::~CPubSub() {

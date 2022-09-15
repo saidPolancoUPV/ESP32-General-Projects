@@ -32,10 +32,11 @@ class CPubSub {
 
     public:
         CPubSub(String ssid, String password, String mqtt_server, bool verbose);
-        void 
+        void set_mqtt_user(String user_name);
+        void set_mqtt_password(String passwd);
         void init();
-        friend void callback(char* topic, byte* message, unsigned int length);
         void set_subcriptions_topics(String * list_of_topics, byte num_of_topics);
+        friend void callback(char* topic, byte* message, unsigned int length);
         void loop();
         ~CPubSub();
         

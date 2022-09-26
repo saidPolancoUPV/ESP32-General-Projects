@@ -8,6 +8,8 @@ CMotor::CMotor(int frequency, int channel, int resolution, int pin1, int pin2, i
     this->motorPin_1 = pin1;
     this->motorPin_2 = pin2;
     this->enablePin = enable_pin;
+
+    this->motorEncendido = false;
 }
 
 void CMotor::init() {
@@ -18,9 +20,6 @@ void CMotor::init() {
 
     ledcAttachPin(this->enablePin, this->pwmChannel);
     ledcSetup(this->pwmChannel, this->freq, this->resolution);
-
-    Serial.print("Max resolution: ");
-    Serial.println(this->max_res);
 }
 
 void CMotor::forward() {
@@ -28,6 +27,7 @@ void CMotor::forward() {
     digitalWrite(this->motorPin_1, LOW);
     digitalWrite(this->motorPin_2, HIGH); 
     ledcWrite(this->pwmChannel, this->max_res);
+    this->motorEncendido = true;
 }
 
 void CMotor::forward(int mills) {
@@ -37,7 +37,7 @@ void CMotor::forward(int mills) {
     digitalWrite(this->motorPin_1, LOW);
     digitalWrite(this->motorPin_2, HIGH); 
     ledcWrite(this->pwmChannel, this->max_res);
-
+    this->motorEncendido = true;
     delay(mills);
     this->stop();
 }
@@ -47,6 +47,7 @@ void CMotor::backward() {
     digitalWrite(this->motorPin_1, HIGH);
     digitalWrite(this->motorPin_2, LOW); 
     ledcWrite(this->pwmChannel, this->max_res);
+    this->motorEncendido = true;
 }
 
 void CMotor::stop() {
@@ -54,5 +55,10 @@ void CMotor::stop() {
     digitalWrite(this->motorPin_1, LOW);
     digitalWrite(this->motorPin_2, LOW); 
     ledcWrite(this->pwmChannel, 0);
+    this->motorEncendido = false;
+}
+
+bool CMotor::estaMotorEncendido() {
+    return this->motorEncendido;
 }
 

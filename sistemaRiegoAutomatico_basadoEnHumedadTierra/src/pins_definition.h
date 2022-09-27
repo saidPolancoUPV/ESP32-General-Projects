@@ -18,4 +18,12 @@
 #define VENTILADOR_PIN 22
 #define FOCO_PIN 21
 #define PLACA_TERMICA_PIN 19
+
+// modulo de humedad en tierra
+#define ACTIVADOR_SOIL_SENSOR_PIN 23
+#define LECTURA_SOIL_SENSOR_PIN 36
+
+// módulo de índice UV
+#define UV_SENSOR_PIN 39
+#define REV3V3_UV_PIN 34
 #endif

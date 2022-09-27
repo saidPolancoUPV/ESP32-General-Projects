@@ -6,10 +6,10 @@
 
 String sendPhoto();
 
-const char* ssid = "INFINITUMD80E_2.4";
-const char* password = "uADQZq7ZAQ";
+const char* ssid = "los odio a todos";
+const char* password = "p1ch1C0ntr453n4F4@";
 
-String serverName = "192.168.0.13";   // REPLACE WITH YOUR Raspberry Pi IP ADDRESS
+String serverName = "192.168.0.106";   // REPLACE WITH YOUR Raspberry Pi IP ADDRESS
 //String serverName = "example.com";   // OR REPLACE WITH YOUR DOMAIN NAME
 
 String serverPath = "/upload.php";     // The default serverPath should be upload.php
@@ -36,7 +36,7 @@ WiFiClient client;
 #define HREF_GPIO_NUM    27
 #define PCLK_GPIO_NUM    25
 
-const int timerInterval = 30000;    // time between each HTTP POST image
+const int timerInterval = 120000;    // time between each HTTP POST image
 unsigned long previousMillis = 0;   // last time image was sent
 
 void setup() {
